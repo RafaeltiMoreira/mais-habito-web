@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { challengeService } from '../../../services/challenge.service';
 import type { UserChallenge } from '../../../types/challenge.types';
 import AbandonChallengeModal from './AbandonChallengeModal';
@@ -55,10 +56,10 @@ const ActiveChallengeCard: FC<ActiveChallengeCardProps> = ({ challenge }) => {
     setError(null);
     try {
       await challengeService.updateNotes(challenge.id, notes);
-      // Optional: Show success toast instead of reload 
-      // but for simplicity, just stop loading.
+      toast.success('Anotações salvas com sucesso!');
     } catch {
       setError('Erro ao salvar anotações.');
+      toast.error('Erro ao salvar anotações.');
     } finally {
       setSavingNotes(false);
     }

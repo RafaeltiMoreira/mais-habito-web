@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Target } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { authService } from '../../services/auth.service';
 import {
@@ -67,7 +67,7 @@ const LoginPage = () => {
   return (
     <Container>
       <LogoWrapper>
-        <LogoIcon>🎯</LogoIcon>
+        <LogoIcon><Target size={28} strokeWidth={2.5} /></LogoIcon>
         <LogoText>Mais<span>Hábito</span></LogoText>
         <Tagline>Transforme sua rotina em conquistas diárias.</Tagline>
       </LogoWrapper>

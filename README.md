@@ -1,4 +1,4 @@
-# 🌟 Mais Hábito — Web
+# 🌟 Mais Hábito -Web
 
 > Uma aplicação web gamificada para organizar sua vida através de desafios, tarefas e sistema de pontos.
 

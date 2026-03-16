@@ -45,14 +45,19 @@ export const LogoWrapper = styled.div`
 
 export const LogoIcon = styled.div`
   width: 56px;
+  height: 56px;
   padding: 12px;
   border-radius: 12px;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  color: #ffffff;
   animation: ${glowPulse} 3s ease-in-out infinite;
+
+  svg {
+    display: block;
+  }
 `;
 
 export const LogoText = styled.h1`
