@@ -7,8 +7,15 @@ import AbandonChallengeModal from './AbandonChallengeModal';
 import {
   Card, CardHeader, ChallengeName, StatusBadge,
   ProgressSection, ProgressHeader, ProgressLabel,
-  FinishButton, ErrorMessage, NotesTextArea, CompleteButton, AbandonButton
+  FinishButton, ErrorMessage, NotesTextArea, CompleteButton, AbandonButton,
+  LogsContainer, LogEntry, LogDate, LogText
 } from './ActiveChallengeCard.styles';
+
+export interface DailyLog {
+  id: string;
+  date: string;
+  text: string;
+}
 
 interface ActiveChallengeCardProps {
   challenge: UserChallenge;
@@ -17,7 +24,22 @@ interface ActiveChallengeCardProps {
 const ActiveChallengeCard: FC<ActiveChallengeCardProps> = ({ challenge }) => {
   const [finishing, setFinishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [notes, setNotes] = useState(challenge.notes || '');
+  
+  const initialLogs = (): DailyLog[] => {
+    if (!challenge.notes) return [];
+    try {
+      const parsed = JSON.parse(challenge.notes);
+      if (Array.isArray(parsed)) {
+        return parsed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      }
+      return [{ id: 'legacy', date: challenge.start_date, text: challenge.notes }];
+    } catch {
+      return [{ id: 'legacy', date: challenge.start_date, text: challenge.notes }];
+    }
+  };
+
+  const [logs, setLogs] = useState<DailyLog[]>(initialLogs());
+  const [newNote, setNewNote] = useState('');
   const [savingNotes, setSavingNotes] = useState(false);
   const [showAbandonModal, setShowAbandonModal] = useState(false);
 
@@ -52,11 +74,23 @@ const ActiveChallengeCard: FC<ActiveChallengeCardProps> = ({ challenge }) => {
   };
 
   const handleSaveNotes = async () => {
+    if (!newNote.trim()) return;
     setSavingNotes(true);
     setError(null);
     try {
-      await challengeService.updateNotes(challenge.id, notes);
-      toast.success('Anotações salvas com sucesso!');
+      const newLog: DailyLog = {
+        id: crypto.randomUUID(),
+        date: new Date().toISOString(),
+        text: newNote.trim(),
+      };
+      
+      const updatedLogs = [newLog, ...logs];
+      const serialized = JSON.stringify(updatedLogs);
+
+      await challengeService.updateNotes(challenge.id, serialized);
+      setLogs(updatedLogs);
+      setNewNote('');
+      toast.success('Progresso diário registrado com sucesso!');
     } catch {
       setError('Erro ao salvar anotações.');
       toast.error('Erro ao salvar anotações.');
@@ -98,22 +132,40 @@ const ActiveChallengeCard: FC<ActiveChallengeCardProps> = ({ challenge }) => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'inherit', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-          Anotações de progresso
+          Diário do Desafio
         </label>
-        <NotesTextArea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="Escreva sobre seu progresso neste desafio..."
-          rows={3}
-          maxLength={500}
-        />
-        <FinishButton 
-          onClick={handleSaveNotes} 
-          disabled={savingNotes}
-          style={{ width: 'fit-content', padding: '6px 12px', fontSize: '0.75rem', marginTop: '4px' }}
-        >
-          {savingNotes ? 'Salvando...' : 'Salvar Anotações'}
-        </FinishButton>
+        
+        {logs.length > 0 && (
+          <LogsContainer>
+            {logs.map(log => (
+              <LogEntry key={log.id}>
+                <LogDate>
+                  {new Date(log.date).toLocaleDateString('pt-BR', { 
+                    day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' 
+                  }).replace(' de ', ' ')}
+                </LogDate>
+                <LogText>{log.text}</LogText>
+              </LogEntry>
+            ))}
+          </LogsContainer>
+        )}
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '8px' }}>
+          <NotesTextArea
+            value={newNote}
+            onChange={(e) => setNewNote(e.target.value)}
+            placeholder="Relate seu progresso diário..."
+            rows={2}
+            maxLength={500}
+          />
+          <FinishButton 
+            onClick={handleSaveNotes} 
+            disabled={savingNotes || !newNote.trim()}
+            style={{ width: 'fit-content', padding: '6px 12px', fontSize: '0.75rem' }}
+          >
+            {savingNotes ? 'Registrando...' : 'Registrar Progresso'}
+          </FinishButton>
+        </div>
       </div>
 
       <div style={{ display: 'flex', gap: '8px' }}>

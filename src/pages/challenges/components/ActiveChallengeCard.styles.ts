@@ -264,3 +264,49 @@ export const ErrorMessage = styled.p`
   font-size: 0.75rem;
   text-align: center;
 `;
+
+export const LogsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.border};
+    border-radius: 4px;
+  }
+`;
+
+export const LogEntry = styled.div`
+  background: ${({ theme }) => theme.colors.surfaceAlt}40;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-left: 3px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: ${shimmer} 0.3s ease-in-out;
+  animation-iteration-count: 1;
+`;
+
+export const LogDate = styled.span`
+  font-size: 0.65rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+export const LogText = styled.p`
+  font-size: 0.8125rem;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
