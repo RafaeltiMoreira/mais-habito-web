@@ -102,3 +102,4 @@ O Frontend segue design atômico e delegação de funções: as páginas ("Pages
 **Rafael Moreira**
 
 - GitHub: [@RafaeltiMoreira](https://github.com/RafaeltiMoreira)
+- Linkedin: [Rafael Moreira](https://www.linkedin.com/in/rafael-moreira-ti/)
