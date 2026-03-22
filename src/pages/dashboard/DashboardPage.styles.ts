@@ -94,6 +94,10 @@ export const ScoreCard = styled.div<{ $isWinning?: boolean }>`
   padding: 24px 28px;
   position: relative;
 
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
+
   &:first-child {
     border-right: 1px solid ${({ theme }) => theme.colors.border};
 
@@ -153,6 +157,10 @@ export const ScoreValue = styled.p`
   color: ${({ theme }) => theme.colors.textPrimary};
   line-height: 1;
 
+  @media (max-width: 480px) {
+    font-size: 2rem;
+  }
+
   span {
     font-size: 1rem;
     font-weight: 600;
@@ -204,6 +212,10 @@ export const ChallengeCard = styled.div`
   gap: 14px;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 export const ChallengeCardInner = styled.div`
@@ -227,6 +239,10 @@ export const ChallengeName = styled.h3`
   color: ${({ theme }) => theme.colors.textPrimary};
   letter-spacing: -0.3px;
   font-style: italic;
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+  }
 `;
 
 export const ChallengeMetaRow = styled.div`
@@ -387,6 +403,12 @@ export const TaskCard = styled.div`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary}33;
   }
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap; /* allow wrapping on very small screens */
+    padding: 12px 16px;
+    gap: 12px;
+  }
 `;
 
 export const TaskCardHeader = styled.div`
@@ -466,6 +488,12 @@ export const CompleteButton = styled.button<{ $disabled?: boolean }>`
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary}2E;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 16px;
+    width: 100%;
+    margin-top: 4px;
   }
 `;
 
