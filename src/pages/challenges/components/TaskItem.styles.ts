@@ -15,6 +15,12 @@ export const Item = styled.div<{ $completed?: boolean }>`
   &:hover {
     border-color: ${({ $completed, theme }) => $completed ? theme.colors.border : theme.colors.primary + '40'};
   }
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+    padding: 14px;
+    gap: 12px;
+  }
 `;
 
 export const ItemLeft = styled.div`
@@ -53,12 +59,29 @@ export const TaskName = styled.p<{ $completed?: boolean }>`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 480px) {
+    white-space: normal;
+    font-size: 0.875rem;
+  }
+`;
+
+export const TaskDescription = styled.p<{ $completed?: boolean }>`
+  font-size: 0.8125rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  line-height: 1.4;
+  opacity: ${({ $completed }) => $completed ? 0.6 : 0.85};
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 export const TaskMeta = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 `;
 
 export const PointsBadge = styled.span`
@@ -89,6 +112,10 @@ export const TaskActions = styled.div`
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    margin-left: auto;
+  }
 `;
 
 export const IconButton = styled.button`

@@ -160,10 +160,10 @@ export const VsDivider = styled.div`
 export const FinishButton = styled.button`
   width: 100%;
   padding: 12px;
-  background: ${({ theme }) => theme.colors.surfaceAlt}60;
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.primary}0F;
+  border: 1px solid ${({ theme }) => theme.colors.primary}66;
   border-radius: 10px;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.primary};
   font-size: 0.875rem;
   font-weight: 600;
   font-family: inherit;
@@ -171,8 +171,8 @@ export const FinishButton = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.primary}4D;
-    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary}26;
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 
   &:disabled {
@@ -212,10 +212,10 @@ export const CompleteButton = styled.button`
 export const AbandonButton = styled.button`
   width: 100%;
   padding: 12px;
-  background: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: #FF4D4D12;
+  border: 1px solid #FF4D4D55;
   border-radius: 10px;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: #FF6B6B;
   font-size: 0.875rem;
   font-weight: 600;
   font-family: inherit;
@@ -226,8 +226,9 @@ export const AbandonButton = styled.button`
   align-items: center;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.error};
-    color: ${({ theme }) => theme.colors.error};
+    background: #FF4D4D26;
+    border-color: #FF4D4D;
+    color: #FF4D4D;
   }
 
   &:disabled {

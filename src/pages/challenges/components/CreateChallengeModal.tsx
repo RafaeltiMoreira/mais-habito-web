@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from 'react';
+import { type FC, useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,16 +50,43 @@ const CreateChallengeModal: FC<CreateChallengeModalProps> = ({ onClose, onSucces
   const [templates, setTemplates] = useState<ChallengeTemplate[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchTemplates = () => {
+  const fetchTemplates = useCallback(async () => {
     setLoading(true);
-    challengeService.listTemplates()
-      .then(setTemplates)
-      .catch(() => setApiError('Erro ao carregar templates'))
-      .finally(() => setLoading(false));
-  };
+    try {
+      const data = await challengeService.listTemplates();
+      setTemplates(data);
+    } catch {
+      setApiError('Erro ao carregar templates');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    fetchTemplates();
+    let isMounted = true;
+
+    const loadTemplates = async () => {
+      try {
+        const data = await challengeService.listTemplates();
+        if (isMounted) {
+          setTemplates(data);
+        }
+      } catch {
+        if (isMounted) {
+          setApiError('Erro ao carregar templates');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void loadTemplates();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const {
@@ -118,9 +145,9 @@ const CreateChallengeModal: FC<CreateChallengeModalProps> = ({ onClose, onSucces
       toast.success('Desafio excluído com sucesso!');
       fetchTemplates();
       if (templates.length - 1 < 10 && view === 'delete') {
-         setView('accept');
+        setView('accept');
       }
-    } catch (error) {
+    } catch {
       toast.error('Erro ao excluir desafio');
     }
   };
@@ -153,15 +180,15 @@ const CreateChallengeModal: FC<CreateChallengeModalProps> = ({ onClose, onSucces
             <SubmitButton type="submit" disabled={isAccepting || loading}>
               {isAccepting ? 'Aceitando...' : 'Aceitar Desafio'}
             </SubmitButton>
-            
+
             {templates.length >= 10 ? (
               <>
-               <ErrorMessage style={{ textAlign: 'center', marginTop: '8px' }}>
-                 Limite de 10 modelos de desafios no catálogo atingido.
-               </ErrorMessage>
-               <SecondaryButton type="button" onClick={() => setView('delete')}>
-                 Excluir um desafio
-               </SecondaryButton>
+                <ErrorMessage style={{ textAlign: 'center', marginTop: '8px' }}>
+                  Limite de 10 modelos de desafios no catálogo atingido.
+                </ErrorMessage>
+                <SecondaryButton type="button" onClick={() => setView('delete')}>
+                  Excluir um desafio
+                </SecondaryButton>
               </>
             ) : (
               <SecondaryButton type="button" onClick={() => setView('create')}>

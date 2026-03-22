@@ -1,7 +1,7 @@
 import React from 'react';
 import { Check, Pencil, Trash2, CheckSquare } from 'lucide-react';
 import {
-  Item, ItemLeft, TaskIconBox, TaskInfo, TaskName, TaskMeta,
+  Item, ItemLeft, TaskIconBox, TaskInfo, TaskName, TaskDescription, TaskMeta,
   PointsBadge, CompletionCount, CompletedBadge,
   TaskActions, IconButton, CompleteButton,
 } from './TaskItem.styles';
@@ -16,9 +16,9 @@ interface TaskItemProps {
 
 const TaskItem: React.FC<TaskItemProps> = ({ taskWithCount, onEdit, onDelete, onComplete }) => {
   const { task, completion_count } = taskWithCount;
-  const { id, title, points, is_daily_routine } = task;
+  const { id, title, description, points, is_daily_routine } = task;
 
-  const isCompleted = completion_count > 0 && is_daily_routine;
+  const isCompleted = completion_count > 0;
 
   return (
     <Item $completed={isCompleted}>
@@ -28,6 +28,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ taskWithCount, onEdit, onDelete, on
         </TaskIconBox>
         <TaskInfo>
           <TaskName $completed={isCompleted}>{title}</TaskName>
+          {description && <TaskDescription $completed={isCompleted}>{description}</TaskDescription>}
           <TaskMeta>
             <PointsBadge>+{points} pts</PointsBadge>
             {is_daily_routine && <CompletionCount>Diária</CompletionCount>}
@@ -38,21 +39,28 @@ const TaskItem: React.FC<TaskItemProps> = ({ taskWithCount, onEdit, onDelete, on
 
       <TaskActions>
         {!isCompleted && (
-          <IconButton title='Editar Tarefa' onClick={() => onEdit(task)}>
-            <Pencil size={14} />
+          <>
+            <IconButton title='Editar Tarefa' onClick={() => onEdit(task)}>
+              <Pencil size={14} />
+            </IconButton>
+            <IconButton title='Excluir Tarefa' onClick={() => onDelete(task)}>
+              <Trash2 size={14} />
+            </IconButton>
+            <CompleteButton
+              title='Concluir Tarefa'
+              $disabled={false}
+              $completed={false}
+              onClick={() => onComplete(id)}
+            >
+              <Check size={16} />
+            </CompleteButton>
+          </>
+        )}
+        {isCompleted && (
+          <IconButton title='Excluir Tarefa' onClick={() => onDelete(task)}>
+            <Trash2 size={14} />
           </IconButton>
         )}
-        <IconButton title='Excluir Tarefa' onClick={() => onDelete(task)}>
-          <Trash2 size={14} />
-        </IconButton>
-        <CompleteButton
-          title='Concluir Tarefa'
-          $disabled={isCompleted}
-          $completed={isCompleted}
-          onClick={() => !isCompleted && onComplete(id)}
-        >
-          <Check size={16} />
-        </CompleteButton>
       </TaskActions>
     </Item>
   );

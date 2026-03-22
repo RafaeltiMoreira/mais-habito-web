@@ -161,7 +161,6 @@ const ActiveChallengeCard: FC<ActiveChallengeCardProps> = ({ challenge }) => {
           <FinishButton 
             onClick={handleSaveNotes} 
             disabled={savingNotes || !newNote.trim()}
-            style={{ width: 'fit-content', padding: '6px 12px', fontSize: '0.75rem' }}
           >
             {savingNotes ? 'Registrando...' : 'Registrar Progresso'}
           </FinishButton>

@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import type { UserChallenge } from '../../../types/challenge.types';
 import {
-  Item, ItemLeft, StatusDot, ItemInfo, ItemName, ItemDate,
+  Item, ItemLeft, StatusDot, ItemInfo, ItemName, ItemDescription, ItemDate,
   ItemRight, WinnerBadge, CancelledBadge,
 } from './ChallengeHistoryItem.styles';
 
@@ -15,6 +15,7 @@ const ChallengeHistoryItem: FC<ChallengeHistoryItemProps> = ({ challenge }) => {
   const endDate = dateStr ? new Date(dateStr).toLocaleDateString('pt-BR') : 'Desconhecida';
   const isAbandoned = challenge.status === 'ABANDONED';
   const templateTitle = challenge.template?.title || `Desafio #${challenge.template_id}`;
+  const templateDescription = challenge.template?.description || '';
 
   return (
     <Item>
@@ -22,6 +23,7 @@ const ChallengeHistoryItem: FC<ChallengeHistoryItemProps> = ({ challenge }) => {
         <StatusDot $cancelled={isAbandoned} />
         <ItemInfo>
           <ItemName>{templateTitle}</ItemName>
+          {templateDescription && <ItemDescription>{templateDescription}</ItemDescription>}
           <ItemDate>Finalizado em {endDate}</ItemDate>
         </ItemInfo>
       </ItemLeft>

@@ -66,7 +66,8 @@ export const SidebarItem = styled(NavLink)<{ $collapsed: boolean }>`
   transition: all 0.2s;
   white-space: nowrap;
   position: relative;
-  border-left: 2px solid transparent;
+  border-left: ${({ $collapsed }) => $collapsed ? 'none' : '2px solid transparent'};
+  justify-content: ${({ $collapsed }) => ($collapsed ? 'center' : 'flex-start')};
 
   svg {
     flex-shrink: 0;
@@ -76,7 +77,7 @@ export const SidebarItem = styled(NavLink)<{ $collapsed: boolean }>`
   &.active {
     color: ${({ theme }) => theme.colors.primary};
     background-color: ${({ theme }) => theme.colors.primary}14;
-    border-left-color: ${({ theme }) => theme.colors.primary};
+    border-left-color: ${({ $collapsed }) => $collapsed ? 'transparent' : undefined};
   }
 
   &:not(.active):hover {
@@ -89,7 +90,9 @@ export const SidebarLabel = styled.span<{ $collapsed: boolean }>`
   font-size: 0.875rem;
   font-weight: 500;
   opacity: ${({ $collapsed }) => ($collapsed ? 0 : 1)};
-  transition: opacity 0.15s ease;
+  width: ${({ $collapsed }) => ($collapsed ? 0 : 'auto')};
+  overflow: hidden;
+  transition: opacity 0.15s ease, width 0.25s ease;
   pointer-events: none;
   white-space: nowrap;
 `;
@@ -118,11 +121,41 @@ export const CollapseButton = styled.button`
   }
 `;
 
+export const NewHabitButton = styled.button<{ $collapsed?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 12px 16px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.primaryDark || theme.colors.primary});
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.2s;
+
+  svg {
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+`;
+
 export const SidebarFooter = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0 0;
+  padding: 0 12px;
 `;
 
 export const ThemeToggle = styled.button<{ $collapsed?: boolean }>`
@@ -130,12 +163,11 @@ export const ThemeToggle = styled.button<{ $collapsed?: boolean }>`
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  margin: 0 12px;
   border-radius: 8px;
   color: ${({ theme }) => theme.colors.textSecondary};
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  width: calc(100% - 24px);
+  width: 100%;
   transition: all 0.2s;
   white-space: nowrap;
   overflow: hidden;
@@ -154,6 +186,8 @@ export const ThemeToggle = styled.button<{ $collapsed?: boolean }>`
     opacity: ${({ $collapsed }) => ($collapsed ? 0 : 1)};
     transition: opacity 0.15s ease;
     pointer-events: none;
+    width: ${({ $collapsed }) => ($collapsed ? 0 : 'auto')};
+    overflow: hidden;
   }
 
   &:hover {
@@ -168,12 +202,11 @@ export const LogoutButton = styled.button<{ $collapsed?: boolean }>`
   align-items: center;
   gap: 10px;
   padding: 11px 12px;
-  margin: 0 12px;
   border-radius: 8px;
   color: ${({ theme }) => theme.colors.primary};
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.colors.primary}4D;
-  width: calc(100% - 24px);
+  width: 100%;
   transition: all 0.2s;
   white-space: nowrap;
   overflow: hidden;
@@ -193,6 +226,8 @@ export const LogoutButton = styled.button<{ $collapsed?: boolean }>`
     opacity: ${({ $collapsed }) => ($collapsed ? 0 : 1)};
     transition: opacity 0.15s ease;
     pointer-events: none;
+    width: ${({ $collapsed }) => ($collapsed ? 0 : 'auto')};
+    overflow: hidden;
   }
 
   &:hover {

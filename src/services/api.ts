@@ -1,7 +1,10 @@
 import axios from "axios";
 
 if (!import.meta.env.VITE_API_URL) {
-  throw new Error("VITE_API_URL is not defined in .env");
+  // throw new Error("VITE_API_URL is not defined in .env");
+  console.warn(
+    "[api] VITE_API_URL não definida. Usando fallback local: http://localhost:3000/api",
+  );
 }
 
 const api = axios.create({

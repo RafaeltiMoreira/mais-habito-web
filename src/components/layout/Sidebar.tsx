@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import {
-  Home,
+  LayoutGrid,
   Target,
   User,
   LogOut,
@@ -9,7 +8,9 @@ import {
   CheckSquare,
   Sun,
   Moon,
+  Plus,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import { useThemeStore } from "../../store/themeStore";
 import {
@@ -23,6 +24,7 @@ import {
   SidebarLogo,
   ThemeToggle,
   SidebarFooter,
+  NewHabitButton,
 } from "./Sidebar.styles";
 import React from "react";
 
@@ -37,10 +39,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapseChange }) => {
   const { isDark, toggleTheme } = useThemeStore();
 
   const navItems = [
-    { path: "/dashboard", icon: Home, label: "Início" },
-    { path: "/challenges", icon: Target, label: "Desafios" },
-    { path: "/tasks", icon: CheckSquare, label: "Tarefas" },
-    { path: "/profile", icon: User, label: "Perfil" },
+    { path: "/dashboard", icon: LayoutGrid, label: "INÍCIO" },
+    { path: "/challenges", icon: Target, label: "DESAFIOS" },
+    { path: "/tasks", icon: CheckSquare, label: "TAREFAS" },
+    { path: "/profile", icon: User, label: "PERFIL" },
   ];
 
   const handleLogout = () => {
@@ -73,15 +75,20 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapseChange }) => {
         ))}
       </SidebarNav>
 
+      <NewHabitButton $collapsed={collapsed} onClick={() => navigate('/tasks')} type="button">
+        <Plus size={18} />
+        <SidebarLabel $collapsed={collapsed}>Novo Hábito</SidebarLabel>
+      </NewHabitButton>
+
       <SidebarFooter>
         <ThemeToggle onClick={toggleTheme} type="button" $collapsed={collapsed}>
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          <span>{isDark ? 'Claro' : 'Escuro'}</span>
+          <span>{isDark ? 'CLARO/ESCURO' : 'CLARO/ESCURO'}</span>
         </ThemeToggle>
 
         <LogoutButton onClick={handleLogout} type="button" $collapsed={collapsed}>
           <LogOut size={20} />
-          <span>Sair</span>
+          <span>SAIR</span>
         </LogoutButton>
       </SidebarFooter>
     </SidebarWrapper>

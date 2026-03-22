@@ -42,6 +42,16 @@ export const ItemName = styled.p`
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
+export const ItemDescription = styled.p`
+  font-size: 0.8125rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
 export const ItemDate = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textSecondary};
